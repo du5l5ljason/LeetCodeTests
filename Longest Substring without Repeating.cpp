@@ -10,20 +10,6 @@
 
 class Solution {
 public:
-    bool isFound(vector< vector<bool> > &table, int id)
-    {
-        if( table[id].size() == 0 )
-            return false;
-        else
-        {
-            for( int i = 0 ; i< table[id].size(); i++ )
-            {
-                if( table[id][i] == 1 )
-                    return true;
-            }
-            return false;
-        }
-    }
     int lengthOfLongestSubstring(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
@@ -32,45 +18,35 @@ public:
         //create a longestNumstring, to store the longest string.
         //each time, 
         // if isn't found, numOfLS[i] = numOfLS[i-1] + 1;  add the character.
-        // if is found. numofLS[i] = 1;, clear the table, add the chracter.
+        // if is found. numOfLS[i] = length between the repeated characters.
+        //find the largest number in the array of numOfLS
+        vector<int> existedId(256, -1);
+        
         int len = s.length();
-        if( len <= 0 ) return -1;
-        else if( len == 1 ) return 1;
+        if( len == 0 )
+            return 0; 
+        if( len == 1 )
+            return 1;
         
-        vector< vector<bool> > isFoundTab;
-        for( int i = 0 ; i< 256; i++ )
-            for( int j = 0 ; j < len; j++ )
-            {
-                isFoundTab[i][j] = 0;
-            }
-        int numOfLS[ len ];
-        memset( numOfLS, 0, len*sizeof( int ) );
+        int numOfLS[len];
+        memset(numOfLS, 0, len*sizeof(int));
         
-        for( int i = 0; i < len; i++ )
+        for( int i = 0 ; i < len ; i ++ )
         {
-            if( i == 0 ) 
+            if( existedId[s[i]] < 0 )
             {
-                numOfLS[0] = 1;
-                isFoundTab[s[i]][i] = 1;
+                existedId[s[i]] = i;
+                int id = i-1<0?0:i-1;
+                numOfLS[i] = numOfLS[id] + 1;
             }
-            else if(isFound(isFoundTab, i))
+            else //existed
             {
-                //find the id, and update the numOfLS.
-                for( int j = 0 ; j < isFoundTab[s[i]].size(); j++ )
-                {
-                    if(isFoundTab[s[i]][j] == 1 )
-                        numOfLS[i] = i - j;
-                }
-                isFoundTab[s[i]][i] = 1;
-            }
-            else
-            {
-                numOfLS[i] = numOfLS[i] + 1;
-                isFoundTab[s[i]][i] = 1;
+                int repId = existedId[s[i]];
+                numOfLS[i] = i - repId;
+                existedId[s[i]] = i;
             }
         }
         
-        //find the largest number in the array of numOfLS
         int longest = 0;
         for( int i = 0 ; i< len ; i++ )
         {
