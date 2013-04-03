@@ -10,32 +10,18 @@
 
 class Solution {
 public:
-    bool canJumpHelper( int A[], int currentId, int endId )
-    {
-        if( currentId == endId ) return true;
-        if( A[currentId] == 0 ) return false;
-        
-        int range = A[currentId];   
-        for( int i = 1 ; i<= range ; i++ )
-        {
-            currentId = currentId + i;
-            if( canJumpHelper(A, currentId, endId) )
-            {
-                return true;
-            }
-            else
-                currentId = currentId - i ;
-        }
-        return false;
-    }
+    
     bool canJump(int A[], int n) {
         // Start typing your C/C++ solution below
         if( n== 0 ) return false;
         if( n == 1 ) return true;
         
-        
-        
-        return canJumpHelper( A, 0, n-1 );
-        
+        int range = A[0];
+        for( int i = 0; i<=range; ++i )
+        {
+            range = max( range, i+A[i] );
+            if( range >=n-1 ) return true;
+        }
+        return false;
     }
 };
