@@ -11,116 +11,197 @@
 class Solution {
 public:
     double findMedianSortedArraysEven( int A[], int m, int B[], int n){
-        int startIdA = m/2;
-        int startIdB = n/2;
-        int currentId = 0 ;
-        int thresh = (m+n)/2-1;
+        double median;
+        int midA = m/2;
+        int midB = n/2;
+        int subLenA = m/2;
+        int subLenB = n/2;
+        int start = 0;  //lowerBand id of median
+        int end = (m+n)-1;  //upperBand id of median
         
-        if( m == 0 )
-            return (B[n/2-1] + B[n/2])/2.0;
-        else if(n == 0)
-            return (A[m/2-1] + A[m/2])/2.0;
-        while( currentId < thresh )
+        
+        while ( subLenA > 0 || subLenB > 0 )
         {
-            if( A[startIdA] <= B[startIdB] )
+            if( A[midA] >= B[midB] ) 
             {
-                startIdA += startIdA + (m - startIdA )/2;
-                currentId += ( m-startIdA );
-                if( currentId >= thresh )
+                start = start + subLenB; 
+                if( start > (m+n)/2-1 )
                 {
-                    currentId = currentId - ( m-startIdA );
-                    startIdA = startIdA- (m-startIdA)/2;
-                    break;
+                    start = start - subLenB;
+                    return findMedianPair( A, midA, m, B, midB, n, start );
+                }
+                end = end - subLenA;
+                subLenA = subLenA/2;
+                subLenB = subLenB/2;
+                midA = midA - subLenA;
+                midB = midB + subLenB;
+            }
+            else
+            {
+                start = start + subLenA; 
+                if( start > (m+n)/2-1 )
+                {
+                    start = start - subLenA;
+                    return findMedianPair( A, midA, m, B, midB, n, start );
+                }
+                end = end - subLenB;
+                subLenA = subLenA/2;
+                subLenB = subLenB/2;
+                midA = midA + subLenA;
+                midB = midB - subLenB;                
+            }
+        }
+        
+        //if goes to here, subLenA == 1, subLenB == 1, then
+        median = ( A[midA] , B[midB] )/2.0;
+        
+        
+        return median;       
+    }
+    double findMedianSortedArraysOdd( int A[], int m, int B[], int n ){
+        double median;
+        int midA = m/2;
+        int midB = n/2;
+        int subLenA = m/2;
+        int subLenB = n/2;
+        int start = 0;  //lowerBand id of median
+        int end = (m+n)-1;  //upperBand id of median
+        
+        //simply case, if A[midA] == B[midB] , return A[midA], because before A[midA], 
+        //there are m/2 elements in A, and before B[midB], there are n/2 in B.
+        //Since we want to return the (m+n)/2 + 1 th element, thus we just return A[midA]
+        if( A[midA] == B[midB] )
+            return A[midA];
+        
+        while ( subLenA > 0 || subLenB > 0 )
+        {
+            if( A[midA] >= B[midB] ) 
+            {
+                start = start + subLenB; 
+                if( start > (m+n)/2 )
+                {
+                    start = start - subLenB;
+                    return findMedianElement( A, midA, m, B, midB, n, start );
+                }
+                end = end - subLenA;
+                subLenA = subLenA/2;
+                subLenB = subLenB/2;
+                midA = midA - subLenA;
+                midB = midB + subLenB;
+            }
+            else
+            {
+                start = start + subLenA; 
+                if( start > (m+n)/2 )
+                {
+                    start = start - subLenA;
+                    return findMedianElement( A, midA, m, B, midB, n, start );
+                }
+                end = end - subLenB;
+                subLenA = subLenA/2;
+                subLenB = subLenB/2;
+                midA = midA + subLenA;
+                midB = midB - subLenB;                
+            }
+        }
+        
+        //if goes to here, subLenA == 1, subLenB == 1, then
+        median = min( A[midA] , B[midB] );
+        
+        
+        return median;  
+    }
+    
+    double findMedianElement( int A[], int midA, int m, int B[], int midB, int n, int start){
+        
+        while( start < (m+n)/2 && midA < m && midB < n){
+            if( A[midA] >= B[midB] )
+            {
+                midB++;
+                start++;
+                if( start == (m+n)/2 )
+                    return A[midA]<=B[midB]?A[midA]:B[midB];
+            }
+            else
+            {
+                midA++;
+                start++;
+                if( start == (m+n)/2 )
+                    return A[midA]<=B[midB]?A[midA]:B[midB];
+            }
+        }
+        
+        if( midA == m )
+        {
+            while( start< (m+n)/2 )
+            {
+                midB++;
+                start++;
+            }
+            return B[midB];
+        }
+        else if( midB == n )
+        {
+            while( start < (m+n)/2 )
+            {
+                midA++;
+                start++;
+            }
+            return A[midA];
+        }
+        
+    }
+    
+    double findMedianPair(int A[], int midA, int m, int B[], int midB, int n, int start)
+    {
+        while( start < (m+n)/2-1 && midA < m && midB < n){
+            if( A[midA] >= B[midB] )
+            {
+                midB++;
+                start++;
+                if( start == (m+n)/2-1 )
+                {
+                    int pair1 = min(A[midA], B[midB]);
+                    if( pair1 == A[midA] ) midA++;
+                    else if( pair1 == B[midB]) midB++;
+                    int pair2 = min(A[midA], B[midB]);
+                    return (pair1+pair2)/2.0;
                 }
             }
             else
             {
-                startIdB += startIdB + (n- startIdB)/2;
-                currentId += (n-startIdB);
-                if( currentId >= thresh )
+                midA++;
+                start++;
+                if( start == (m+n)/2-1 )
                 {
-                    currentId = currentId - ( m-startIdB );
-                    startIdB = startIdB- (m-startIdB)/2;
-                    break;
+                    int pair1 = min(A[midA], B[midB]);
+                    if( pair1 == A[midA] ) midA++;
+                    else if( pair1 == B[midB]) midB++;
+                    int pair2 = min(A[midA], B[midB]);
+                    return (pair1+pair2)/2.0;
                 }
             }
         }
         
-        //find median between A[startIdA]-A[m] and B[startIdB]-B[n]
-        while( currentId < thresh )
+        if( midA == m )
         {
-            if( A[startIdA] <= B[startIdB] )
+            while( start< (m+n)/2-1 )
             {
-                startIdA ++;
-            }   
-            else    startIdB++;
-            
-            currentId++;
+                midB++;
+                start++;
+            }
+            return (B[midB]+B[midB+1])/2.0;
         }
-        //currentId = (m+n)/2-1;
-        int median1 = A[startIdA]<=B[startIdB]?A[startIdA++]:B[startIdB++];
-        int median2;
-        if( startIdA>=m ) 
-            median2 = B[startIdB];
-        else if( startIdB>=n )
-            median2 = A[startIdA];
-        else
-            median2 = A[startIdA]<=B[startIdB]?A[startIdA]:B[startIdB];
-        return (median1+median2)/2;
+        else if( midB == n )
+        {
+            while( start < (m+n)/2-1 )
+            {
+                midA++;
+                start++;
+            }
+            return (A[midA]+A[midA+1])/2.0;
+        }
     }
-    
-    double findMedianSortedArraysOdd( int A[], int m, int B[], int n){
-        
-        int startIdA = m/2;
-        int startIdB = n/2;
-        int currentId = 0 ;
-        int thresh = (m+n)/2;
-        
-        if( m == 0 )
-            return B[n/2];
-        else if(n == 0)
-            return A[m/2];
-        while( currentId < thresh )
-        {
-            if( A[startIdA] <= B[startIdB] )
-            {
-                startIdA += startIdA + (m - startIdA )/2;
-                currentId += ( m-startIdA );
-                if( currentId >= thresh )
-                {
-                    currentId = currentId - ( m-startIdA );
-                    startIdA = startIdA- (m-startIdA)/2;
-                    break;
-                }
-            }
-            else
-            {
-                startIdB += startIdB + (n- startIdB)/2;
-                currentId += (n-startIdB);
-                if( currentId >= thresh )
-                {
-                    currentId = currentId - ( m-startIdB );
-                    startIdB = startIdB- (m-startIdB)/2;
-                    break;
-                }
-            }
-        }
-        
-        //find median between A[startIdA]-A[m] and B[startIdB]-B[n]
-        while( currentId < thresh )
-        {
-            if( A[startIdA] <= B[startIdB] )
-            {
-                startIdA ++;
-            }   
-            else    startIdB++;
-            
-            currentId++;
-        }
-        //currentId = (m+n)/2-1;
-        return A[startIdA]<=B[startIdB]?A[startIdA]:B[startIdB];
-    }
-    
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
