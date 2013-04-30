@@ -7,6 +7,9 @@
 //
 
 #include <iostream>
+#include <string>
+
+using namespace std;
 class Solution {
 public:
     bool isAlphaNum( const char *c )
