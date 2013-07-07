@@ -1,10 +1,12 @@
 //
 //  BestTimeToBuyAndSell2.cpp
 //  
-//
+//  
 //  Created by 廷芳 杜 on 7/5/13.
 //  Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 //
+//  Every time, we buy at local minimum and sell at local maximum. Add all the local profit.
+//  TC O(n) solution.
 
 #include <iostream>
 class Solution {
