@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -16,58 +17,46 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+//      BFS store treeNodes in a queue, add NULL between each level, whenever the top node is null, add the vec into result
+//      
 class Solution {
 public:
-    struct BFSNode{
-        TreeNode *node;
-        int level;
-        BFSNode(TreeNode *n, int l):level(l){
-            node = n;
-        };
-    };
     vector<vector<int> > levelOrder(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > levelPool;
-        if( root == NULL ) return levelPool;
+
         
-        queue<BFSNode> u;
-        int level = 0;
-        u.push( BFSNode( root, level ) );
-        vector<int> vec;
-        vec.push_back( root->val );
-        levelPool.push_back(vec);
-        while( !u.empty() ){
-            BFSNode v = u.front();
-            u.pop();
+        vector< vector<int> > pool;
+        vector< int > vec;
+        queue< TreeNode* > Q;
+        
+        //push a NULL between each level, so that we can easily partition each level
+        if( root == NULL ) return pool;
+        Q.push(root);
+        Q.push(NULL);
+        
+        while( !Q.empty() )
+        {
+            TreeNode *v = Q.front();
+            Q.pop();
             
-            if( v.node->left != NULL )
+            if( v == NULL )
             {
-                if( levelPool.size()<= v.level+1 )
-                {
-                    vector<int> vec;
-                    vec.push_back( v.node->left->val );
-                    levelPool.push_back( vec );
-                }   
-                else
-                    levelPool[v.level+1].push_back( v.node->left->val );
-                u.push( BFSNode( v.node->left, v.level+1 ));
-                
-            }    
-            if( v.node->right != NULL )
+                pool.push_back( vec );
+                vec.clear();
+                if( !Q.empty() ) 
+                    Q.push( NULL );     //the remaining nodes must be in the same level.
+            }
+            else
             {
-                if( levelPool.size()<= v.level+1 )
-                {
-                    vector<int> vec;
-                    vec.push_back( v.node->right->val );
-                    levelPool.push_back( vec );
-                }   
-                else
-                    levelPool[v.level+1].push_back( v.node->right->val );   
-                u.push( BFSNode( v.node->right, v.level+1 ));
-            }    
+                vec.push_back( v->val );
+                if( v->left ) Q.push( v->left );
+                if( v->right ) Q.push( v->right );
+            }
         }
         
-        return levelPool;
+        return pool;
+        
     }
 };
