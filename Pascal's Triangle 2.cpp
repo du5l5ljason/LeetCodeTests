@@ -1,5 +1,5 @@
 //
-//  SurroundedRegions.cpp
+//  Pascal's Triangle 2.cpp
 //  
 //
 //  Created by 廷芳 杜 on 7/5/13.
