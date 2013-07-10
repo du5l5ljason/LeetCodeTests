@@ -1,5 +1,5 @@
 //
-//  MergeTwoSortedArrays.cpp
+//  MedianOfTwoSortedArrays.cpp
 //  
 //
 //  Created by 廷芳 杜 on 4/2/13.
