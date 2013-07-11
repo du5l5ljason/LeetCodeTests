@@ -5,7 +5,10 @@
 //  Created by 廷芳 杜 on 4/15/13.
 //  Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 //
-
+//  The maximum path sum could be the value of root, root + maximum left path, root + maximum right path, root+maximum left 
+// path sum + maximum right path sum
+// Because the the path may start and end at any node, the problem is that you may alway compare the current maximum value with 
+// with the value begin with any code. That's why we add a maxValue.
 #include <iostream>
 
 class Solution {
