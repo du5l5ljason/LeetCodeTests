@@ -22,7 +22,7 @@ public:
         }
         return true;
     }
-    string &process( string &s )
+    string process( string &s )
     {
         string str;
         for( int i = 0 ; i< s.length(); i++ )
