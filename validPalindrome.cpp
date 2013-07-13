@@ -1,88 +1,45 @@
 //
-//  validPalindrome.cpp
-//  testValidPalindrome
+//  ValidPalindrome.cpp
+//  
 //
-//  Created by 廷芳 杜 on 4/18/13.
+//  Created by 廷芳 杜 on 7/13/13.
 //  Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 //
 
 #include <iostream>
-#include <string>
 
-using namespace std;
 class Solution {
 public:
-    bool isAlphaNum( const char *c )
+    bool isPalindromeHelper( string s )
     {
-        if( (*c)>='a' && (*c)<='z' ) return true;
-        if( (*c)>='A' && (*c)<='Z' ) return true;
-        if( (*c)>='0' && (*c)<='9' ) return true;
-        
-        return false;
+        int start = 0;
+        int end = s.length()-1;
+        while( end>=start )
+        {
+            if( s[start] != s[end] ) return false;
+            start++;
+            end--;
+        }
+        return true;
     }
-    
-    char *toLower( const char *c )
+    string &process( string &s )
     {
-        char *lc = new char();
-        *lc = *c+32;
-        return lc;
-    }
-    
-    bool isUpper( const char *c )
-    {
-        if( (*c)>='A' && (*c)<='Z' ) return true;
-        return false;
-    }
-    string deleteTokens(string s)
-    {
-        string str="";
-        
+        string str;
         for( int i = 0 ; i< s.length(); i++ )
         {
-            const char *c = s.substr(i,1).c_str();
-            if( isAlphaNum( c ) )   
-            {
-                if( isUpper(c) )
-                {
-                    char *lc = toLower(c);
-                    string st(lc);
-                    str += st;
-                }
-                else
-                    str += s[i];           
-            }
-            
+            if( (s[i]>='0'&&s[i]<='9') || (s[i]>='a'&&s[i]<='z') )
+                str  = str+ s[i];
+            else if( s[i]>='A'&&s[i]<='Z')
+                str  = str + (char)(s[i]+32);
         }
-        
         return str;
     }
-    
-    string reverse( string input )
-    {
-        int len = input.size();
-        if( len == 0 ) return input;
-        string output="";
-        for( int i = len-1 ; i>=0 ; i-- )
-        {
-            output += input[i] ;
-        }
-        return output;
-    }
-    
     bool isPalindrome(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if( s.length() == 0 ) return true;
-        
-        string newString = deleteTokens(s);
-        if( newString.length() == 0 ) return true;
-        
-        string reverseString = reverse(newString );
-        
-        if( newString == reverseString )
-            return true;
-        else
-            return false;
-        
+        if( s.empty() ) return true;
+        if( s.length()==1 ) return true;
+        string validStr = process( s );
+        return isPalindromeHelper( validStr );
     }
 };
