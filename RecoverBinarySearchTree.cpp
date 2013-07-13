@@ -20,7 +20,7 @@ public:
     void inOrderTraversal( TreeNode *root, TreeNode * &pre )
     {
         if( root == NULL ) return;
-        if( root->left ) inOrderTraversal( root->left, pre );
+        inOrderTraversal( root->left, pre );
         if( pre != NULL && pre->val > root->val )
         {
             if(firstNode == NULL && secondNode == NULL )
@@ -34,7 +34,7 @@ public:
             }
         }
         pre = root;
-        if( root->right ) inOrderTraversal( root->right, pre );
+        inOrderTraversal( root->right, pre );
         
     }
     void recoverTree(TreeNode *root) {
@@ -43,7 +43,8 @@ public:
         if( root == NULL ) return;
         if( root->left == NULL && root->right == NULL ) return;
         TreeNode *pre = NULL;
-        
+        firstNode = NULL;
+        secondNode = NULL;
         inOrderTraversal( root, pre );
         if( firstNode == NULL && secondNode == NULL ) return;
         swap( firstNode->val, secondNode->val );
