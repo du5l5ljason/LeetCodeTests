@@ -12,8 +12,8 @@ class Solution {
 public:
     bool isInterleaveHelper( string s1, int id1, string s2, int id2, string s3, int id3 )
     {
-        if( id1 < 0 && id2 < 0 ) return false;
         if( id3 < 0 ) return true;
+        if( id1 < 0 && id2 < 0 ) return false;
         if( id1 < 0 )
         {
             if( s3[id3] == s2[id2] )
