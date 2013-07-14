@@ -1,5 +1,5 @@
 //
-//  ScrambleStrings.cpp
+//  InterLeaveString.cpp
 //  
 //
 //  Created by 廷芳 杜 on 7/13/13.
