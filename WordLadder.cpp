@@ -16,44 +16,43 @@ public:
         if( start == end ) return 1;
         if( dict.empty() ) return 0;
         
-        int shortest = 0;
         int len = 1;
         queue<string> u;
         u.push( start );
         u.push( "" );
-        while( !u.empty() )
+        while( !u.empty()  )
         {
             string v = u.front();
             u.pop();
             if( v == "" )   //whole level has been traversaled.
             {
                 len = len+1;
-                if( !u.empty() )u.push( "" );
+                if( !u.empty() ) u.push( "" );
             }
             else
             {
-                if( v == end )
-                {
-                    shortest = len;
-                    break;
-                }
+                if( v == end ) return len;
+                
                 else
                 {
-                    if( dict.find(v)!=dict.end()) dict.erase( v );
                     string temp = v;
-                    for( int i = 0; i < v.length(); i++ )
+                    for( int i = 0; i < v.length(); ++i )
                     {
-                        for( int j = 0 ; j < 26; j++ )
+                        for( int j = 'a' ; j <= 'z'; ++j )
                         {
-                            v[i] = 'a' + j;
-                            if( dict.find(v) != dict.end() ) //find the word
+                            v[i] = j;
+                            if( dict.find(v) != dict.end()  ) //find the word
+                            {
                                 u.push( v );
+                                dict.erase( v );
+                            }
                         }
                         v = temp;
                     }
+                    
                 }
             }
         }
-        return shortest;
+        return 0;
     }
 };
