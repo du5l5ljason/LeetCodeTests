@@ -8,14 +8,6 @@
 
 #include <iostream>
 
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
@@ -24,20 +16,17 @@ public:
         if( head == NULL ) return NULL;
         
         ListNode *current = head->next;
-        ListNode *newList = head;
-        ListNode *newCur = newList;
-        int temp = head->val;
+        ListNode *newCur = head;
         while( current != NULL )
         {
-            if( current->val != temp )  //delete this
+            if( current->val != newCur->val )  
             {
                 newCur->next = current;
                 newCur = newCur->next;
-                temp = current->val;
             }    
             current = current->next;
         }
         newCur->next = NULL;
-        return newList;
+        return head;
     }
 };
