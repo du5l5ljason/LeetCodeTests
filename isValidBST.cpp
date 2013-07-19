@@ -16,13 +16,11 @@ public:
         if( root == NULL ) return true;
         int min = -100000;
         int max = 100000;
-        
         return isValidBSTHelper( root, min, max );
     }
     bool isValidBSTHelper( TreeNode *root, int min, int max )
     {
         if( root == NULL ) return true;
-        
         return (root->val>min&&root->val<max)
         &&isValidBSTHelper( root->left, min, root->val )
         &&isValidBSTHelper( root->right, root->val, max );
