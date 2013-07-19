@@ -14,17 +14,16 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         if( root == NULL ) return true;
-        int min = -100000;
-        int max = 100000;
-        
-        return isValidBSTHelper( root, min, max );
+        TreeNode *pre = NULL;
+        return checkBST( root, pre );
     }
-    bool isValidBSTHelper( TreeNode *root, int min, int max )
+    bool checkBST( TreeNode *root, TreeNode *&pre )
     {
         if( root == NULL ) return true;
-        
-        return (root->val>min&&root->val<max)
-        &&isValidBSTHelper( root->left, min, root->val )
-        &&isValidBSTHelper( root->right, root->val, max );
+        bool isLeft = checkBST( root->left, pre );
+        if( pre!=NULL && pre->val >= root->val ) return false;
+        pre = root;
+        bool isRight = checkBST( root->right, pre );
+        return isLeft && isRight;
     }
 };
