@@ -14,19 +14,22 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         if( head == NULL ) return NULL;
-        
-        ListNode *current = head->next;
-        ListNode *newCur = head;
-        while( current != NULL )
+        ListNode *read = head->next;    //Read original list.
+        ListNode *write = head;         //Write the list.
+        ListNode *collector = NULL;     //Point to the nodes to be deleted.
+        while( read )
         {
-            if( current->val != newCur->val )  
+            if( read->val != write->val ) //correct, write one 
             {
-                newCur->next = current;
-                newCur = newCur->next;
+                write->next = read;
+                write = write->next;
             }    
-            current = current->next;
+            else                        //duplicates, need to be deleted.
+                collector = read;
+            read = read->next;
+            if(!collector) delete collector;
         }
-        newCur->next = NULL;
+        write->next = NULL;
         return head;
     }
 };
