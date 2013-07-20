@@ -26,12 +26,8 @@ public:
         ListNode *node1 = head;
         ListNode *node2 = head->next;
         ListNode *nextHead = node2->next;
-        ListNode *temp = new ListNode(0);           //swap node1 and node2
-        node2->next = temp;
-        temp->next = node1;
+        node2->next = node1;
         node1->next = swapPairs( nextHead );
-        node2->next = temp->next;
-        delete temp;
         return node2;
     }
 };
