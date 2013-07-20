@@ -22,20 +22,16 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         if( head == NULL ) return NULL;
-        
-        ListNode *helper = new ListNode(0);
-        helper->next = head;
-        ListNode *current = helper;
-        while( current->next!=NULL && current->next->next!=NULL )
-        {
-            ListNode *next = current->next;
-            ListNode *temp = next->next;
-            next->next = temp->next;
-            temp->next = next;
-            current->next = temp;
-            
-            current = current->next->next;
-        }
-        return helper->next;
+        if( head->next == NULL ) return head;
+        ListNode *node1 = head;
+        ListNode *node2 = head->next;
+        ListNode *nextHead = node2->next;
+        ListNode *temp = new ListNode(0);           //swap node1 and node2
+        node2->next = temp;
+        temp->next = node1;
+        node1->next = swapPairs( nextHead );
+        node2->next = temp->next;
+        delete temp;
+        return node2;
     }
 };
