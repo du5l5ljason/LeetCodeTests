@@ -30,6 +30,7 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector< vector<string> > pathPool;
+        cout << "This is a test message!" << endl;
         if( start == end )
         {
             vector<string> vec;
